@@ -11,7 +11,7 @@ fi
 KEYSARRAY=()
 URLSARRAY=()
 
-urlsConfig="./config/urls.cfg"
+urlsConfig="./public/urls.cfg"
 echo "Reading $urlsConfig"
 while read -r line
 do
@@ -48,9 +48,9 @@ do
   dateTime=$(date +'%Y-%m-%d %H:%M')
   if [[ $commit == true ]]
   then
-    echo $dateTime, $result >> "status/${key}_report.log"
+    echo $dateTime, $result >> "public/status/${key}_report.log"
     # By default we keep 2000 last log entries.  Feel free to modify this to meet your needs.
-    echo "$(tail -2000 status/${key}_report.log)" > "status/${key}_report.log"
+    echo "$(tail -2000 public/status/${key}_report.log)" > "public/status/${key}_report.log"
   else
     echo "    $dateTime, $result"
   fi
@@ -61,7 +61,7 @@ then
   # Let's make Vijaye the most productive person on GitHub.
   git config --global user.name 'mehatab'
   git config --global user.email 'shaikh.mehatab@gmail.com'
-  git add -A --force status/
+  git add -A --force public/status/
   git commit -am '[Automated] Update Health Check Logs'
   git push
 fi
