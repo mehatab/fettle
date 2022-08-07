@@ -11,7 +11,7 @@ fi
 KEYSARRAY=()
 URLSARRAY=()
 
-urlsConfig="./urls.yml"
+urlsConfig="../config/urls.yml"
 echo "Reading $urlsConfig"
 while read -r line
 do
