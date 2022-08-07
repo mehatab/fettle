@@ -21,7 +21,12 @@ function useIncidents() {
                     if (!key || !url) {
                         continue;
                     }
-                    services.push({ id: ii, name: key, status: "unknown", logs: await logs(key) })
+                    const log = await logs(key);
+                    if (log.length > 0) {
+                        services.push({ id: ii, name: key, status: log[log.length - 1].status, logs: log })
+                    } else {
+                        services.push({ id: ii, name: key, status: "unknown", logs: log })
+                    }
                 }
                 setData(services as Service[]);
             } catch (e: any) {
@@ -41,10 +46,15 @@ async function logs(key: string): Promise<Log[]> {
     const text = await response.text();
     const lines = text.split("\n");
     const logs: Log[] = [];
-    for (let ii = 0; ii < lines.length; ii++) {
-        const line = lines[ii];
-        const [created_at, status, response_time] = line.split(", ");
-        logs.push({ response_time, status, created_at })
+
+    for (let index = 89; index >= 0; index--) {
+        if (lines.length > index) {
+            const line = lines[index];
+            const [created_at, status, response_time] = line.split(", ");
+            logs.push({ response_time, status, created_at })
+        } else {
+            logs.push({ response_time: "0s", status: "not-started", created_at: "" })
+        }
     }
 
     return logs;
