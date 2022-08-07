@@ -34,8 +34,12 @@ do
 
   for i in 1 2 3 4; 
   do
-    response=$(curl --write-out '%{http_code}' --silent --output /dev/null $url)
-    if [ "$response" -eq 200 ] || [ "$response" -eq 202 ] || [ "$response" -eq 301 ] || [ "$response" -eq 302 ] || [ "$response" -eq 307 ]; then
+    response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}s' --silent --output /dev/null $url)
+    # http_code and time_total are the last two fields in the output
+    http_code=$(echo $response | cut -d ' ' -f 1)
+    time_total=$(echo $response | cut -d ' ' -f 2)
+    echo "    $http_code $time_total"
+    if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 202 ] || [ "$http_code" -eq 301 ] || [ "$http_code" -eq 302 ] || [ "$http_code" -eq 307 ]; then
       result="success"
     else
       result="failed"

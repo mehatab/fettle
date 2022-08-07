@@ -21,15 +21,9 @@ function useIncidents() {
                     if (!key || !url) {
                         continue;
                     }
-                    services.push({
-                        id: ii,
-                        name: key,
-                        status: "unknown",
-                        logs: await logs(key)
-                    })
+                    services.push({ id: ii, name: key, status: "unknown", logs: await logs(key) })
                 }
-
-                setData(data as Service[]);
+                setData(services as Service[]);
             } catch (e: any) {
                 setError(e);
             } finally {
@@ -46,21 +40,13 @@ async function logs(key: string): Promise<Log[]> {
     const response = await fetch(`./status/${key}_report.log`);
     const text = await response.text();
     const lines = text.split("\n");
-    console.log("Logs", text)
     const logs: Log[] = [];
     for (let ii = 0; ii < lines.length; ii++) {
         const line = lines[ii];
-        const [response_time, status] = line.split(" ");
-        if (!response_time || !status) {
-            continue;
-        }
-        logs.push({
-            response_time,
-            status,
-            created_at: new Date().toISOString()
-        })
+        const [created_at, status, response_time] = line.split(", ");
+        logs.push({ response_time, status, created_at })
     }
-    ///console.log("Logs", logs);
+
     return logs;
 }
 
