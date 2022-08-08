@@ -63,8 +63,8 @@ done
 if [[ $commit == true ]]
 then
   # Let's make Vijaye the most productive person on GitHub.
-  git config --global user.name 'mehatab'
-  git config --global user.email 'shaikh.mehatab@gmail.com'
+  git config --global user.name 'fettle-mehatab'
+  git config --global user.email 'fettle.mehatab@gmail.com'
   git add -A --force public/status/
   git commit -am '[Automated] Update Health Check Logs'
   git push

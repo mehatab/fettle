@@ -8,8 +8,8 @@ interface ServiceItemProps {
 
 const ServiceItem: FunctionComponent<ServiceItemProps> = ({ item }) => {
     return (
-        <div>
-            <div className='flex basis-full'>
+        <div className='max-w-full'>
+            <div className='flex'>
                 <h1>{item.status === 'success' ? '✅' : '❌'}</h1>
                 <h1 className='p-10'>{item.name}</h1>
             </div>
@@ -17,7 +17,7 @@ const ServiceItem: FunctionComponent<ServiceItemProps> = ({ item }) => {
             <div className='flex'>
                 {
                     item.logs.map(log => (
-                        <div key={log.created_at} className='flex-1'>
+                        <div key={log.created_at} className='shrink-0 h-16 w-32'>
                             <ServiceLog item={log} />
                         </div>
                     ))
