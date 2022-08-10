@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 
-function useIncidents() {
+function useServices() {
     const [data, setData] = useState<Service[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -60,4 +60,4 @@ async function logs(key: string): Promise<Log[]> {
     return logs;
 }
 
-export default useIncidents;
+export default useServices;

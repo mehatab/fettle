@@ -8,9 +8,7 @@ interface ServiceLogProps {
 
 const ServiceLog: FunctionComponent<ServiceLogProps> = ({ item }) => {
     return (
-        <div>
-            {item.status === 'success' ? '✅' : '❌'}
-        </div>
+        <div className='bg-green-500 ml-0.5 sm:rounded-lg flex-1 h-8' />
     )
 }
 

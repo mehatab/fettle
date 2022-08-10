@@ -1,27 +1,24 @@
 import useIncidents from './hooks/useIncidents'
 import type { NextPage } from 'next'
-import Incidents from './types/Incidents';
+import Incidents from './types/Incident';
 
 const IncidentsSection: NextPage = () => {
-    const [data, isPostsLoading] = useIncidents(
-        "https://api.github.com/repos/aws/aws-cdk/issues"
-    );
+    const [incidents, isIncidentsLoading] = useIncidents();
     return (
         <div>
-            <h1>Incidents </h1>
             {
-                isPostsLoading ? (
+                isIncidentsLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <ul>
+                    <div>
                         {
-                            (data as Incidents[]).map(incident => (
-                                <li key={incident.id}>
-                                    <h2>{incident.title}</h2>
-                                </li>
+                            (incidents as Incidents[]).map(incident => (
+                                <div className='flex items-center' key={incident.id}>
+                                    <p className='text-base font-semibold leading-6 text-gray-900'>{incident.title}</p>
+                                </div>
                             ))
                         }
-                    </ul>
+                    </div>
                 )
             }
         </div>
