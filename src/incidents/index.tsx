@@ -16,7 +16,7 @@ const IncidentsSection: NextPage = () => {
                             (monthlyIncidents as MonthlyIncident[]).map(incidents => (
                                 <div key={incidents.month}>
                                     <div className='flex items-center'>
-                                        <p className='mr-5 text-lg font-semibold leading-6 text-gray-900'>{incidents.month}</p>
+                                        <p className='mr-5 text-xl font-semibold leading-6 text-gray-900'>{incidents.month}</p>
                                         <div className='flex-1 h-px  bg-gray-300' />
                                     </div>
                                     <div className='mt-5'>

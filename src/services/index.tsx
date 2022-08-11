@@ -2,7 +2,6 @@ import useServices from './hooks/useServices';
 import type { NextPage } from 'next'
 import Service from './types/Service';
 import ServiceItem from './components/service';
-import Incident from './types/Incident';
 import IncidentsSection from '../incidents';
 
 const ServicesSection: NextPage = () => {
@@ -40,7 +39,7 @@ const ServicesSection: NextPage = () => {
                         )
                     }
                 </div>
-                <p className="mt-10  sm:text-lg	text-base font-semibold leading-7 text-gray-900">Recent incident</p>
+                <p className="mt-10 sm:text-lg	text-base font-semibold leading-7 text-gray-900">Recent incident</p>
                 <IncidentsSection />
             </div>
         </div >
