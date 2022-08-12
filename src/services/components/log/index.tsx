@@ -1,6 +1,4 @@
-import type { NextPage } from 'next'
 import { FunctionComponent, useState } from 'react';
-import Log from '../../types/Log';
 import LogDaySummary from '../../types/LogDaySummary';
 import StatusView from './Status';
 
