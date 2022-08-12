@@ -49,7 +49,6 @@ function devideMonthly(issues: any[]) {
         console.log('issues', r)
         return r;
     }, {})).forEach((month: any) => {
-
         incidents.push({
             month: month.month,
             incidents: month.incidents

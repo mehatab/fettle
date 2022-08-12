@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import Log from '../../types/Log';
+import LogDaySummary from '../../types/LogDaySummary';
 import Service from "../../types/Service";
 import ServiceLog from "../log";
 
@@ -23,8 +24,8 @@ const ServiceItem: FunctionComponent<ServiceItemProps> = ({ item }) => {
             </div>
             <div className='flex mt-2'>
                 {
-                    ((item.logs || []) as Log[]).map((log) => (
-                        <ServiceLog key={log.created_at} item={log} />
+                    ((item.logs || []) as LogDaySummary[]).map((log) => (
+                        <ServiceLog key={log.date} item={log} />
                     ))
                 }
             </div>

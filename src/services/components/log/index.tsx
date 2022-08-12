@@ -1,14 +1,38 @@
 import type { NextPage } from 'next'
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState } from 'react';
 import Log from '../../types/Log';
+import LogDaySummary from '../../types/LogDaySummary';
+import StatusView from './Status';
 
 interface ServiceLogProps {
-    item: Log
+    item: LogDaySummary
 }
 
 const ServiceLog: FunctionComponent<ServiceLogProps> = ({ item }) => {
+    const [show, setShow] = useState(false);
+
+    const statusView = (status: string) => {
+        switch (status) {
+            case 'unknown':
+                return <div onMouseOver={() => setShow(true)} onMouseLeave={() => setShow(false)} className='bg-gray-300 ml-0.5 sm:rounded-lg flex-1 h-8' >
+                    <StatusView item={item} show={show} />
+                </div>;
+            case 'down':
+                return <div onMouseOver={() => setShow(true)} onMouseLeave={() => setShow(false)} className='bg-red-300 ml-0.5 sm:rounded-lg flex-1 h-8' >
+                    <StatusView item={item} show={show} />
+                </div>;
+            default:
+                return <div onMouseOver={() => setShow(true)} onMouseLeave={() => setShow(false)} className='bg-green-500 ml-0.5 sm:rounded-lg flex-1 h-8' >
+                    <StatusView item={item} show={show} />
+                </div>;
+        }
+    }
     return (
-        <div className='bg-green-500 ml-0.5 sm:rounded-lg flex-1 h-8' />
+        <>
+            {
+                statusView(item.status)
+            }
+        </ >
     )
 }
 

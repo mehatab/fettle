@@ -27,9 +27,9 @@ const IncidentsSection: NextPage = () => {
                                                         <div>
                                                             <p className='text-base font-semibold leading-6 text-gray-900'>{incident.title}</p>
                                                         </div>
-                                                        <p>Resolved {incident.closed_at}</p>
+                                                        <p className='text-sm text-gray-500'>Resolved {incident.closed_at}</p>
                                                     </div>
-                                                    <p>Reported at {incident.created_at}</p>
+                                                    <p className='text-sm text-gray-500'>Reported at {incident.created_at}</p>
                                                 </div>
                                             ))
                                         }

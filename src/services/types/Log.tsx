@@ -1,5 +1,5 @@
 interface Log {
-    id: number;
+    id: string;
     response_time: string;
     status: string;
     created_at: string;

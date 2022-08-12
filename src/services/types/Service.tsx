@@ -1,10 +1,10 @@
-import Log from "./Log";
+import LogDaySummary from "./LogDaySummary";
 
 interface Service {
     id: number;
     name: string;
     status: string;
-    logs: Log[];
+    logs: LogDaySummary[];
 }
 
 export default Service;
