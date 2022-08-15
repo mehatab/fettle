@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+const debug = process.env.NODE_ENV !== "production";
+
 const nextConfig = {
-  assetPrefix: '/fettle',// process.env.NODE_ENV === 'production' ? '/fettle' : '',
+  assetPrefix: !debug ? 'https://mehatab.github.io/fettle/' : '',
   reactStrictMode: true,
   swcMinify: true,
 }
