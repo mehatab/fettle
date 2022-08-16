@@ -10,7 +10,7 @@ interface ServiceItemProps {
 
 const ServiceItem: FunctionComponent<ServiceItemProps> = ({ item }) => {
     return (
-        <div>
+        <div className='mb-10'>
             <div className='flex'>
                 <svg className="h-6 w-6 flex-none fill-sky-100 stroke-green-500 stroke-2">
                     <circle cx="12" cy="12" r="11" />
