@@ -15,6 +15,7 @@ function useServices() {
                 const response = await fetch("./urls.cfg");
                 const configText = await response.text();
                 const configLines = configText.split("\n");
+
                 const services: Service[] = []
                 for (let ii = 0; ii < configLines.length; ii++) {
                     const configLine = configLines[ii];
@@ -64,10 +65,14 @@ async function logs(key: string): Promise<LogDaySummary[]> {
         return r;
     }, {}));
 
+
     prepareSummary.forEach((logSummary: any) => {
         var avg_response_time = 0
+
         logSummary.logs.forEach((log: Log) => {
-            avg_response_time += Number(log.response_time.replaceAll('s', ''));
+            if (log.response_time) {
+                avg_response_time += Number(log.response_time.replaceAll('s', ''));
+            }
         });
 
         logDaySummary.push({
@@ -78,12 +83,14 @@ async function logs(key: string): Promise<LogDaySummary[]> {
         })
     })
 
+
     return fillData(logDaySummary);
 }
 
 function fillData(data: LogDaySummary[]): LogDaySummary[] {
     const logDaySummary: LogDaySummary[] = [];
     var today = new Date();
+
 
     for (var i = -1; i < 89; i += 1) {
         const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
