@@ -2,7 +2,6 @@ import useIncidents from './hooks/useIncidents'
 import type { NextPage } from 'next'
 import Incidents from './types/Incident';
 import MonthlyIncident from './types/MonthlyIncident';
-import Image from 'next/image';
 
 const IncidentsSection: NextPage = () => {
     const [monthlyIncidents, isIncidentsLoading] = useIncidents();
