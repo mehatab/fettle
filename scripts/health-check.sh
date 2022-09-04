@@ -8,7 +8,7 @@ fi
 KEYSARRAY=()
 URLSARRAY=()
 
-urlsConfig="pblic/urls.cfg"
+urlsConfig="public/urls.cfg"
 echo "Reading $urlsConfig"
 while read -r line
 do
