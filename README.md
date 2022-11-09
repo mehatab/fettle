@@ -13,4 +13,6 @@
 
 - Incidents
     - Github issue is used for incident management.
-    
+
+# Contributing
+Feel free to submit pull requests and/or file issues for bugs and suggestions.
