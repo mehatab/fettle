@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Status } from "../../utils/constants";
 import ServiceStatus from "../types/ServiceStatus";
 import SystemStatus from "../types/SystemStatus";
 
@@ -14,7 +15,6 @@ function useSystemStatus() {
                 const response = await fetch("./urls.cfg");
                 const configText = await response.text();
                 const configLines = configText.split("\n");
-
                 const services: ServiceStatus[] = [];
                 for (let ii = 0; ii < configLines.length; ii++) {
                     const configLine = configLines[ii];
@@ -26,12 +26,32 @@ function useSystemStatus() {
 
                     services.push(status);
                 }
-
-                setSystemStatus({
-                    title: "All System Operational",
-                    status: "operational",
-                    datetime: "11 Aug, 17:43"
-                });                
+                
+                if (services.every((item) => item.status === "success")) {
+                    setSystemStatus({
+                        title: "All System Operational",
+                        status: Status.OPERATIONAL,
+                        datetime: services[0].date
+                    });
+                } else if (services.every((item) => item.status === "failed")) {
+                    setSystemStatus({
+                        title: "Outage",
+                        status: Status.OUTAGE,
+                        datetime: services[0].date
+                     });
+                } else if (services.every((item) => item.status === "")) {
+                    setSystemStatus({
+                        title: "Unknown",
+                        status: Status.UNKNOWN,
+                        datetime: services[0].date
+                    });
+                } else {
+                    setSystemStatus({
+                        title: "Partial Outage",
+                        status: Status.PARTIAL_OUTAGE,
+                        datetime: services[0].date
+                    });
+                }
             } catch (e: any) {
                 setError(e);
             } finally {

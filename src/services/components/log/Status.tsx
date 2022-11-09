@@ -15,7 +15,6 @@ const StatusView: FunctionComponent<ServiceLogProps> = ({ item, show }) => {
                 <div className="absolute card mt-10 pl-5 pr-5">
                     <p>Date: {item.date}</p>
                     <p>Status: {item.status}</p>
-                    <p>Avg. Response: {item.avg_response_time.toFixed(2)}</p>
                 </div>
             }
         </>
