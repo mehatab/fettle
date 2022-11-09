@@ -29,7 +29,7 @@ do
   url="${URLSARRAY[index]}"
   echo "  $key=$url"
 
-  for i in 1 2 3 4; 
+  for i in 1 2 3; 
   do
     response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null $url)
     http_code=$(echo $response | cut -d ' ' -f 1)
