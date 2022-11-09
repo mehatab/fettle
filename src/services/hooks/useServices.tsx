@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
+import { Status } from "../../utils/constants";
 
 function useServices() {
     const [data, setData] = useState<Service[]>([]);
@@ -75,11 +76,22 @@ async function logs(key: string): Promise<LogDaySummary[]> {
             }
         });
 
+        let status = ""
+        if (logSummary.logs.length === 0) {
+            status = "unknown"
+        } else if (logSummary.logs.every((item:any)=> item.status === 'success')) {
+            status = Status.OPERATIONAL
+        } else if (logSummary.logs.every((item:any)=> item.status === 'failed')) {
+            status = Status.OUTAGE
+        } else {
+            status = Status.PARTIAL_OUTAGE
+        }
+
         logDaySummary.push({
             avg_response_time: avg_response_time / logSummary.logs.length,
             current_status: logSummary.logs[logSummary.logs.length - 1].status,
             date: logSummary.date.substr(0, 10),
-            status: logSummary.logs[logSummary.logs.length - 1].status
+            status: status
         })
     })
 
