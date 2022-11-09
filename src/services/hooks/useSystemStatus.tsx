@@ -3,7 +3,7 @@ import ServiceStatus from "../types/ServiceStatus";
 import SystemStatus from "../types/SystemStatus";
 
 function useSystemStatus() {
-    const [data, setData] = useState<SystemStatus>();
+    const [systemStatus, setSystemStatus] = useState<SystemStatus>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
@@ -27,7 +27,7 @@ function useSystemStatus() {
                     services.push(status);
                 }
 
-                setData({
+                setSystemStatus({
                     title: "All System Operational",
                     status: "operational",
                     datetime: "11 Aug, 17:43"
@@ -41,7 +41,7 @@ function useSystemStatus() {
         loadData();
     }, []);
 
-    return [data, isLoading, error];
+    return {systemStatus, isLoading, error};
 }
 
 async function logs(key: string): Promise<ServiceStatus> {
