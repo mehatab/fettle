@@ -7,7 +7,7 @@ import useSystemStatus from './hooks/useSystemStatus';
 
 const ServicesSection: NextPage = () => {
     const [data, isServicesLoading] = useServices();
-    const [status, isStatusLoading] = useSystemStatus();
+    const {systemStatus, isLoading} = useSystemStatus();
 
     return (
         <div className='mt-10'>
@@ -18,11 +18,11 @@ const ServicesSection: NextPage = () => {
                             <circle cx="12" cy="12" r="11" />
                             <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                         </svg>
-                        <p className="ml-3 text-gray-900">{status?.title}</p>                        
+                        <p className="ml-3 text-gray-900">{systemStatus?.title}</p>                        
                     </div>
                     <div>
                         <p className="text-xs text-gray-400">Last updated</p>
-                        <p className="text-xs text-gray-400 text-end ">{status?.datetime}</p>
+                        <p className="text-xs text-gray-400 text-end ">{systemStatus?.datetime}</p>
                     </div>
                 </div>
             </div>
