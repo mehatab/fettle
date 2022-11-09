@@ -18,12 +18,11 @@ const ServicesSection: NextPage = () => {
                             <circle cx="12" cy="12" r="11" />
                             <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                         </svg>
-                        <p className="ml-3 text-gray-900">All System Operational</p>
-                        <p>{JSON.stringify(status)}</p>
+                        <p className="ml-3 text-gray-900">{status?.title}</p>                        
                     </div>
                     <div>
                         <p className="text-xs text-gray-400">Last updated</p>
-                        <p className="text-xs text-gray-400 text-end ">5 min ago</p>
+                        <p className="text-xs text-gray-400 text-end ">{status?.datetime}</p>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import ServiceStatus from "../types/ServiceStatus";
+import SystemStatus from "../types/SystemStatus";
 
 function useSystemStatus() {
-    const [data, setData] = useState<ServiceStatus[]>([]);
+    const [data, setData] = useState<SystemStatus>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
@@ -26,7 +27,11 @@ function useSystemStatus() {
                     services.push(status);
                 }
 
-                setData(services as ServiceStatus[]);
+                setData({
+                    title: "All System Operational",
+                    status: "operational",
+                    datetime: "11 Aug, 17:43"
+                });                
             } catch (e: any) {
                 setError(e);
             } finally {
