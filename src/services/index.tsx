@@ -3,9 +3,12 @@ import type { NextPage } from 'next'
 import Service from './types/Service';
 import ServiceItem from './components/service';
 import IncidentsSection from '../incidents';
+import useSystemStatus from './hooks/useSystemStatus';
 
 const ServicesSection: NextPage = () => {
     const [data, isServicesLoading] = useServices();
+    const [status, isStatusLoading] = useSystemStatus();
+
     return (
         <div className='mt-10'>
             <div className=" mx-px md:ml-80 md:mr-80 bg-white dark:bg-slate-800 rounded-xl card">
@@ -16,6 +19,7 @@ const ServicesSection: NextPage = () => {
                             <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                         </svg>
                         <p className="ml-3 text-gray-900">All System Operational</p>
+                        <p>{JSON.stringify(status)}</p>
                     </div>
                     <div>
                         <p className="text-xs text-gray-400">Last updated</p>
