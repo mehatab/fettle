@@ -103,7 +103,6 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
     const logDaySummary: LogDaySummary[] = [];
     var today = new Date();
 
-
     for (var i = -1; i < 89; i += 1) {
         const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
