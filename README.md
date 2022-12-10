@@ -1,4 +1,4 @@
-# Fettle 💟 (work-in-progress 👷🔧️👷‍♀️⛏)
+# Fettle 💟 
 
 **Fettle** is the open-source status page, powered entirely by GitHub Actions, Issues, and Pages.
 
