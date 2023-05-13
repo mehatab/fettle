@@ -1,5 +1,7 @@
 # Fettle 💟 
 
+[Stars badge](https://badgen.net/github/stars/mehatab/fettle)
+
 **Fettle** is the open-source status page, powered entirely by GitHub Actions, Issues, and Pages.
 
 <img src="./public/ss.png" />
