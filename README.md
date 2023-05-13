@@ -1,6 +1,3 @@
-<!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-
 # Fettle 💟 
 
 <a class="github-button" href="https://github.com/mehatab/fettle" aria-label="Star mehatab/fettle on GitHub">
