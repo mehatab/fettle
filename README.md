@@ -1,6 +1,12 @@
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 # Fettle 💟 
 
-!\[stars badge\]((https://badgen.net/github/stars/mehatab/fettle)
+<a class="github-button" href="https://github.com/mehatab/fettle" aria-label="Star mehatab/fettle on GitHub">
+<img src="https://badgen.net/github/stars/mehatab/fettle" />
+</a>
+
 
 **Fettle** is the open-source status page, powered entirely by GitHub Actions, Issues, and Pages.
 
