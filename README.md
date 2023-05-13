@@ -10,6 +10,30 @@
 <img src="./public/ss.png" />
 
 
+# Usage
+First of all, you need to fork this repository.
+
+Update the urls and name in `urls.cfg` file present in `public > urls.cfg` file.
+
+```text
+Google=https://google.com
+Facebook=https://facebook.com
+```
+
+Then, you need to enable GitHub Pages on your forked repository. You can do this by going to `Settings > Pages` and enabling it on the `main` branch.
+
+In Build and deployment section select GitHub Actions.
+
+
+If you want to change the time interval of monitoring then you can change it in `.github > workflows > health-check.yml` file.
+update the cron time in the following line.
+
+```yaml
+    on:
+      schedule:
+        - cron: "0 0/12 * * *"
+```
+
 # How it works
 
 - Hosting
