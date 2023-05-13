@@ -1,9 +1,9 @@
+
+<p align="center">
+  <img src="https://img.shields.io/github/stars/mehatab/fettle?style=social" alt="github star count" align="right" />
+</p>
+
 # Fettle 💟 
-
-<a class="github-button" href="https://github.com/mehatab/fettle" aria-label="Star mehatab/fettle on GitHub">
-<img src="https://badgen.net/github/stars/mehatab/fettle" />
-</a>
-
 
 **Fettle** is the open-source status page, powered entirely by GitHub Actions, Issues, and Pages.
 
