@@ -1,8 +1,4 @@
 
-<p align="center">
-  <img src="https://img.shields.io/github/stars/mehatab/fettle?style=social" alt="github star count" align="right" />
-</p>
-
 # Fettle 💟 
 
 **Fettle** is the open-source status page, powered entirely by GitHub Actions, Issues, and Pages.
