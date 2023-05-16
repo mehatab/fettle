@@ -5,10 +5,12 @@
 
 <img src="./public/ss.png" />
 
+<br/>
 
 # Usage
 First of all, you need to fork this repository.
 
+## Update URL's
 Update the urls and name in `urls.cfg` file present in `public > urls.cfg` file.
 
 ```text
@@ -20,7 +22,7 @@ Then, you need to enable GitHub Pages on your forked repository. You can do this
 
 In Build and deployment section select GitHub Actions.
 
-
+## Change monitoring interval
 If you want to change the time interval of monitoring then you can change it in `.github > workflows > health-check.yml` file.
 update the cron time in the following line.
 
@@ -29,6 +31,14 @@ update the cron time in the following line.
       schedule:
         - cron: "0 0/12 * * *"
 ```
+
+## Reporting your first incident
+1. Go to issues tab 
+2. Create a new label `incident`
+3. Create a issue
+4. Add the label `incident` to the issue
+
+<br/>
 
 # How it works
 
