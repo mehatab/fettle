@@ -5,7 +5,6 @@
 
 <img src="./public/ss.png" />
 
-<br/>
 
 # Usage
 First of all, you need to fork this repository.
@@ -38,7 +37,6 @@ update the cron time in the following line.
 3. Create a issue
 4. Add the label `incident` to the issue
 
-<br/>
 
 # How it works
 
