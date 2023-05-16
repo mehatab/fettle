@@ -17,6 +17,14 @@ Google=https://google.com
 Facebook=https://facebook.com
 ```
 
+## Incidents URL update
+Go to `src > incidents > hooks > useIncidents.tsx` file and update the url with your repository url.
+```
+https://api.github.com/repos/mehatab/fettle/issues?per_page=20&state=all&labels=incident
+```
+
+## Deployment setup
+
 Then, you need to enable GitHub Pages on your forked repository. You can do this by going to `Settings > Pages` and enabling it on the `main` branch.
 
 In Build and deployment section select GitHub Actions.
