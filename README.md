@@ -25,7 +25,20 @@ Replace **mehatab/fettle** with your **username/repo-name**
 https://api.github.com/repos/mehatab/fettle/issues?per_page=20&state=all&labels=incident
 ```
 
+## Service status URL update
+Go to `src > services > hooks > useServices.tsx` file and update the url with your repository url.
 
+Replace **mehatab/fettle** with your **username/repo-name**
+```
+https://raw.githubusercontent.com/mehatab/fettle/main/public/status/${key}_report.log
+```
+
+Go to `src > services > hooks > useSystemStatus.tsx` file and update the url with your repository url.
+
+Replace **mehatab/fettle** with your **username/repo-name**
+```
+https://raw.githubusercontent.com/mehatab/fettle/main/public/status/${key}_report.log
+```
 
 ## Deployment setup
 
