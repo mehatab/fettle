@@ -9,4 +9,4 @@ export const Status = {
     PARTIAL_OUTAGE: "Partial outage",
     OUTAGE: "Outage",
     UNKNOWN: "Unknown"
-}
+} as const;

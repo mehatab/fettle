@@ -31,18 +31,7 @@ function useHealthChecksUIServices(apiUrl: string) {
                 const services: Service[] = []
                 for (let ii = 0; ii < sections.length; ii++) {
                     const section = sections[ii];
-                    const {
-                        id,
-                        name,
-                        status,
-                        uri,
-
-                        onStateFrom,
-                        lastExecuted,
-
-                        entries,
-                        history,
-                    } = section;
+                    const { id, name } = section;
 
                     if (!id || !name) {
                         continue;
@@ -80,7 +69,7 @@ async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
     const logs: Log[] = [];
     const logDaySummary: LogDaySummary[] = [];
 
-    const statusMap : {[x in HealthChecksUIStatus]: string }  = {
+    const statusMap : {[x in HealthChecksUIStatus]: "failed" | "success" | "" }  = {
         'Unhealthy': 'failed',
         'Degraded': '',
         'Healthy': 'success',
@@ -90,11 +79,22 @@ async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
 
     sorted.forEach((execution: ExecutionHistory) => {
         const { id, name, status, on } = execution;
+
+        // If the execution is older than DAYS_BACK, skip it
+        // const executionDate = new Date(on);
+        // const today = new Date();
+
+        // const daysBack = daysDifference(today, executionDate);
+
+        // if (daysBack > DAYS_BACK) {
+        //     return;
+        // }
+
         const response_time = null; // TODO: HealthChecksUI does not provide response time on per execution level
         logs.push({ id: `${id}`, response_time, status: statusMap[status], created_at: on })
     })
 
-    if (sorted.length === 0 && lastStatus) {
+    if (logs.length === 0 && lastStatus) {
         // Include a synthetic entry based on the last state change
         const syntheticLog = {
             id: '0',
@@ -132,8 +132,14 @@ async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
             const summaryForDayBefore = logsPerDayFromApi[keyDayBefore] || logsPerDaySynthetic[keyDayBefore];
 
             if (summaryForDayBefore) {
-                const logs = summaryForDayBefore.logs.length > 0
-                    ? [summaryForDayBefore.logs[summaryForDayBefore.logs.length - 1]]
+                const logsForDayBefore = summaryForDayBefore.logs;
+
+                const lastLog = logsForDayBefore.length > 0
+                    ? logsForDayBefore[logsForDayBefore.length - 1]
+                    : null;
+
+                const logs = lastLog && lastLog.status === "success"
+                    ? [lastLog]
                     : [];
 
                 const created_at = dayWithoutLogs.toISOString();
@@ -180,10 +186,6 @@ async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
                 ? 0
                 : avg_response_time / logs.length,
 
-            current_status: lastLog
-                ? lastLog.status
-                : Status.UNKNOWN,
-
             date: dateOnly,
             status: status
         })
@@ -202,7 +204,6 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
         logDaySummary.push({
             avg_response_time: summary?.avg_response_time || 0,
-            current_status: summary?.current_status || Status.UNKNOWN,
             date: d.toISOString().substr(0, 10),
             status: summary?.status || Status.UNKNOWN
         })
@@ -231,9 +232,16 @@ function determineDaysBack(today: Date, logs: Log[]) {
         ? new Date(logs[0].created_at)
         : new Date(today.getFullYear(), today.getMonth(), today.getDate() - DAYS_BACK);
 
-    const daysBack = Math.ceil((today.getTime() - olderDate.getTime()) / (1000 * 3600 * 24));
+    const daysBack = daysDifference(today, olderDate);
 
     return daysBack;
+}
+
+function daysDifference(a: Date, b: Date) {
+    const diffTime = Math.abs(b.getTime() - a.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
+
+    return diffDays;
 }
 
 function dateBeforeRelativeTo(relativeTo: Date, days: number) {

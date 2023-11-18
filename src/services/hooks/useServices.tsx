@@ -53,7 +53,7 @@ async function logs(key: string): Promise<LogDaySummary[]> {
     const logs: Log[] = [];
     const logDaySummary: LogDaySummary[] = [];
 
-    lines.forEach((line: string) => {
+    lines.forEach((line: any) => {
         const [created_at, status, response_time] = line.split(", ");
         logs.push({ id: created_at, response_time, status, created_at })
     })
@@ -89,7 +89,6 @@ async function logs(key: string): Promise<LogDaySummary[]> {
 
         logDaySummary.push({
             avg_response_time: avg_response_time / logSummary.logs.length,
-            current_status: logSummary.logs[logSummary.logs.length - 1].status,
             date: logSummary.date.substr(0, 10),
             status: status
         })
@@ -108,7 +107,6 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
         logDaySummary.push({
             avg_response_time: summary?.avg_response_time || 0,
-            current_status: summary?.current_status || Status.UNKNOWN,
             date: d.toISOString().substr(0, 10),
             status: summary?.status || Status.UNKNOWN
         })
