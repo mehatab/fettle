@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
-import { Status } from "../../utils/constants";
+import { DAYS_BACK, Status } from "../../utils/constants";
 
 function useServices() {
     const [data, setData] = useState<Service[]>([]);
@@ -103,7 +103,7 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
     const logDaySummary: LogDaySummary[] = [];
     var today = new Date();
 
-    for (var i = -1; i < 89; i += 1) {
+    for (var i = -1; i < DAYS_BACK - 1; i += 1) {
         const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
         logDaySummary.push({
