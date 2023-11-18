@@ -28,19 +28,19 @@ function useSystemStatus(services: Service[] | null) {
                 return { name, status, date };
             });
 
-            if (statuses.every((item) => item.status === "success")) {
+            if (statuses.every((item) => item.status === Status.OPERATIONAL)) {
                 setSystemStatus({
                     title: "All Operational",
                     status: Status.OPERATIONAL,
                     datetime: statuses[0].date
                 });
-            } else if (statuses.every((item) => item.status === "failed")) {
+            } else if (statuses.every((item) => item.status === Status.OUTAGE)) {
                 setSystemStatus({
                     title: "Outage",
                     status: Status.OUTAGE,
                     datetime: statuses[0].date
                     });
-            } else if (statuses.every((item) => item.status === "")) {
+            } else if (statuses.every((item) => item.status === Status.UNKNOWN)) {
                 setSystemStatus({
                     title: "Unknown",
                     status: Status.UNKNOWN,

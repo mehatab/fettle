@@ -1,8 +1,6 @@
-// import useServices from './hooks/useServices';
 import useHealthChecksUIServices from './hooks/useHealthChecksUIServices';
 import type { NextPage } from 'next'
 import ServiceItem from './components/service';
-// import IncidentsSection from '../incidents';
 import useSystemStatus from './hooks/useSystemStatus';
 import { Status, URL_HEALTHCHECKS_UI_API } from '../utils/constants';
 
@@ -11,8 +9,8 @@ const Nbsp = () => {
 }
 
 const ServicesSection: NextPage = () => {
+    // TODO: Error handling
     const { services, isLoading: isServicesLoading, error } = useHealthChecksUIServices(URL_HEALTHCHECKS_UI_API);
-    // const [data, isServicesLoading] = useServices();
     const {systemStatus, isLoading} = useSystemStatus(services);
 
     const Icon = () => {

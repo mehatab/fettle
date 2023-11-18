@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
-import { DAYS_BACK, Status } from "../../utils/constants";
+import { DAYS_BACK, Status, Statuses } from "../../utils/constants";
 import { sortByProp } from "../../utils/sortByProp";
 import { ExecutionHistory, HealthChecksUILiveness, HealthChecksUIStatus } from "../types/HealthChecksUI";
 
@@ -166,7 +166,8 @@ async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
             }
         });
 
-        let status = ""
+        let status: Statuses;
+
         if (logs.length === 0) {
             status = Status.UNKNOWN
         } else if (logs.every((item)=> item.status === 'success')) {

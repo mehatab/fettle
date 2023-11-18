@@ -10,3 +10,5 @@ export const Status = {
     OUTAGE: "Outage",
     UNKNOWN: "Unknown"
 } as const;
+
+export type Statuses = typeof Status[keyof typeof Status];
