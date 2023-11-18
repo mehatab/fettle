@@ -13,8 +13,8 @@ const StatusView: FunctionComponent<ServiceLogProps> = ({ item, show }) => {
             {
                 show &&
                 <div className="absolute card mt-10 pl-5 pr-5">
-                    <p>Date: {item.date}</p>
-                    <p>Status: {item.status}</p>
+                    <p>{item.date}</p>
+                    <p>{item.status}</p>
                 </div>
             }
         </>
