@@ -80,7 +80,7 @@ async function logs(key: string): Promise<ServiceStatus> {
     } catch (e) {
         return {
             name: key,
-            status: "unknown",
+            status: Status.UNKNOWN,
             date: undefined,
         };
     }

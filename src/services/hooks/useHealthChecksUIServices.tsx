@@ -4,7 +4,7 @@ import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
 import { DAYS_BACK, GITHUB_ORG_REPO, Status } from "../../utils/constants";
 import { sortByProp } from "../../utils/sortByProp";
-import { HealthChecksUILiveness } from "../types/HealthChecksUI";
+import { Check, ExecutionHistory, HealthChecksUILiveness } from "../types/HealthChecksUI";
 
 function useHealthChecksUIServices(apiUrl: string) {
     const [data, setData] = useState<Service[]>([]);
@@ -34,17 +34,18 @@ function useHealthChecksUIServices(apiUrl: string) {
                         lastExecuted,
 
                         entries,
+                        history,
                     } = section;
 
                     if (!id || !name) {
                         continue;
                     }
-                    const log = await logs(entries);
+                    const log = await logs(entries, history);
 
                     if (log.length > 0) {
                         services.push({ id: ii, name: name, status: log[log.length - 1].status, logs: log })
                     } else {
-                        services.push({ id: ii, name: name, status: "unknown", logs: log })
+                        services.push({ id: ii, name: name, status: Status.UNKNOWN, logs: log })
                     }
                 }
                 setData(services as Service[]);
@@ -60,11 +61,11 @@ function useHealthChecksUIServices(apiUrl: string) {
     return [data, isLoading, error];
 }
 
-async function logs(entries: unknown[]): Promise<LogDaySummary[]> {
-    return []; // TODO
-    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
+async function logs(entries: Check[], history: ExecutionHistory[]): Promise<LogDaySummary[]> {
+    console.log(history);
+    // const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
 
-    const text = await response.text();
+    const text = ""; // await response.text();
     const lines = text.split("\n");
     const logs: Log[] = [];
     const logDaySummary: LogDaySummary[] = [];
@@ -94,7 +95,7 @@ async function logs(entries: unknown[]): Promise<LogDaySummary[]> {
 
         let status = ""
         if (logSummary.logs.length === 0) {
-            status = "unknown"
+            status = Status.UNKNOWN
         } else if (logSummary.logs.every((item:any)=> item.status === 'success')) {
             status = Status.OPERATIONAL
         } else if (logSummary.logs.every((item:any)=> item.status === 'failed')) {
@@ -124,9 +125,9 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
         logDaySummary.push({
             avg_response_time: summary?.avg_response_time || 0,
-            current_status: summary?.current_status || "unknown",
+            current_status: summary?.current_status || Status.UNKNOWN,
             date: d.toISOString().substr(0, 10),
-            status: summary?.status || "unknown"
+            status: summary?.status || Status.UNKNOWN
         })
     }
 

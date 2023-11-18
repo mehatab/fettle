@@ -29,7 +29,7 @@ function useServices() {
                     if (log.length > 0) {
                         services.push({ id: ii, name: key, status: log[log.length - 1].status, logs: log })
                     } else {
-                        services.push({ id: ii, name: key, status: "unknown", logs: log })
+                        services.push({ id: ii, name: key, status: Status.UNKNOWN, logs: log })
                     }
                 }
                 setData(services as Service[]);
@@ -78,7 +78,7 @@ async function logs(key: string): Promise<LogDaySummary[]> {
 
         let status = ""
         if (logSummary.logs.length === 0) {
-            status = "unknown"
+            status = Status.UNKNOWN
         } else if (logSummary.logs.every((item:any)=> item.status === 'success')) {
             status = Status.OPERATIONAL
         } else if (logSummary.logs.every((item:any)=> item.status === 'failed')) {
@@ -108,9 +108,9 @@ function fillData(data: LogDaySummary[]): LogDaySummary[] {
         const summary = data.find((item) => item.date === d.toISOString().substr(0, 10));
         logDaySummary.push({
             avg_response_time: summary?.avg_response_time || 0,
-            current_status: summary?.current_status || "unknown",
+            current_status: summary?.current_status || Status.UNKNOWN,
             date: d.toISOString().substr(0, 10),
-            status: summary?.status || "unknown"
+            status: summary?.status || Status.UNKNOWN
         })
     }
 

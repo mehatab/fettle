@@ -12,7 +12,7 @@ const ServiceLog: FunctionComponent<ServiceLogProps> = ({ item }) => {
 
     const statusView = (status: string) => {
         switch (status) {
-            case 'unknown':
+            case Status.UNKNOWN:
                 return <div onMouseOver={() => setShow(true)} onMouseLeave={() => setShow(false)} className='bg-gray-300 ml-px sm:ml-0.5 sm:rounded-lg flex-1 h-8' >
                     <StatusView item={item} show={show} />
                 </div>;
