@@ -7,9 +7,9 @@ const Home: NextPage = () => {
   return (
     <div className='h-full w-full '>
       <div className="mt-20 absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-      <div className="w-full h-40 absolute bg-blue-200">
-        <div className="ml-10 mt-3 md:pl-80 md:pr-80 sm:w-full h-full">
-          <Image src="/sellercloud.svg" width={150} height={100} className="w-40 h-16" alt="Logo" />
+      <div className="w-full h-32 absolute bg-blue-200">
+        <div className="mt-3 md:pl-40 md:pr-40 sm:w-full h-full">
+          <img src="/sellercloud.svg" width={150} height={100} className="w-40 h-16 w-full mx-auto" alt="Logo" />
         </div>
       </div>
       <div className='mt-20 w-full absolute overflow-scroll	'>
