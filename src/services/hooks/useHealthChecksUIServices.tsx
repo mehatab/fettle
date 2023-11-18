@@ -26,7 +26,7 @@ function useHealthChecksUIServices(apiUrl: string) {
                 const raw = await response.json() as HealthChecksUILiveness[];
 
                 const sorted = sortByProp(raw, "name");
-                const sections = sorted.filter(s => s.name === "SCMS Authentication API");
+                const sections = sorted;
 
                 const services: Service[] = []
                 for (let ii = 0; ii < sections.length; ii++) {
