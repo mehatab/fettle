@@ -1,4 +1,5 @@
-import useServices from './hooks/useServices';
+// import useServices from './hooks/useServices';
+import useHealthChecksUIServices from './hooks/useHealthChecksUIServices';
 import type { NextPage } from 'next'
 import Service from './types/Service';
 import ServiceItem from './components/service';
@@ -11,7 +12,8 @@ const Nbsp = () => {
 }
 
 const ServicesSection: NextPage = () => {
-    const [data, isServicesLoading] = useServices();
+    const [data, isServicesLoading] = useHealthChecksUIServices();
+    // const [data, isServicesLoading] = useServices();
     const {systemStatus, isLoading} = useSystemStatus();
 
     const Icon = () => {
