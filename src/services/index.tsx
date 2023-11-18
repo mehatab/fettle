@@ -1,4 +1,4 @@
-import useServices from './hooks/useServices';
+// import useServices from './hooks/useServices';
 import useHealthChecksUIServices from './hooks/useHealthChecksUIServices';
 import type { NextPage } from 'next'
 import Service from './types/Service';

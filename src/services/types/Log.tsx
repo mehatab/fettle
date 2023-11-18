@@ -1,7 +1,7 @@
 interface Log {
     id: string;
     response_time: string | null;
-    status: string;
+    status: string; // TODO: failed | success
     created_at: string;
 }
 
