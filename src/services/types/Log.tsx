@@ -1,6 +1,6 @@
 interface Log {
     id: string;
-    response_time: string;
+    response_time: string | null;
     status: string;
     created_at: string;
 }

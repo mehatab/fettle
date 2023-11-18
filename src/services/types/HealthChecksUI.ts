@@ -15,7 +15,7 @@ export interface HealthChecksUILiveness {
 
 export interface Check {
   name: string;
-  status: string;
+  status: HealthChecksUIStatus;
   description: string | null;
   duration: string;
   tags: string[];
@@ -25,6 +25,6 @@ export interface ExecutionHistory {
   name: string;
   description: string | null;
   id: number;
-  status: string;
+  status: HealthChecksUIStatus;
   on: string;
 }
