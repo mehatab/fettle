@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
-import { DAYS_BACK, GITHUB_ORG_REPO, Status } from "../../utils/constants";
+import { DAYS_BACK, Status } from "../../utils/constants";
 import { sortByProp } from "../../utils/sortByProp";
-import { Check, ExecutionHistory, HealthChecksUILiveness } from "../types/HealthChecksUI";
+import { Check, ExecutionHistory, HealthChecksUILiveness, HealthChecksUIStatus } from "../types/HealthChecksUI";
 
 function useHealthChecksUIServices(apiUrl: string) {
     const [data, setData] = useState<Service[]>([]);
@@ -62,17 +62,19 @@ function useHealthChecksUIServices(apiUrl: string) {
 }
 
 async function logs(entries: Check[], history: ExecutionHistory[]): Promise<LogDaySummary[]> {
-    console.log(history);
-    // const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
-
-    const text = ""; // await response.text();
-    const lines = text.split("\n");
     const logs: Log[] = [];
     const logDaySummary: LogDaySummary[] = [];
 
-    lines.forEach((line: string) => {
-        const [created_at, status, response_time] = line.split(", ");
-        logs.push({ id: created_at, response_time, status, created_at })
+    const statusMap : {[x in HealthChecksUIStatus]: string }  = {
+        'Unhealthy': 'failed',
+        'Degraded': '',
+        'Healthy': 'success',
+    };
+
+    history.forEach((execution: ExecutionHistory) => {
+        const { id, name, status, on } = execution;
+        const response_time = null; // TODO: HealthChecksUI does not provide response time on per execution level
+        logs.push({ id: `${id}`, response_time, status: statusMap[status], created_at: on })
     })
 
     const prepareSummary = Object.values(logs.reduce((r: any, date) => {
