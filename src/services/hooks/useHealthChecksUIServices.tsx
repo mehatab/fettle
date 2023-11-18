@@ -14,7 +14,7 @@ type LogSummary = {
 type LogsPerDay = { [key: string]: LogSummary };
 
 function useHealthChecksUIServices(apiUrl: string) {
-    const [data, setData] = useState<Service[]>([]);
+    const [services, setServices] = useState<Service[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
@@ -55,7 +55,7 @@ function useHealthChecksUIServices(apiUrl: string) {
                         services.push({ id: ii, name: name, status: Status.UNKNOWN, logs: log })
                     }
                 }
-                setData(services as Service[]);
+                setServices(services);
             } catch (e: any) {
                 setError(e);
             } finally {
@@ -65,7 +65,7 @@ function useHealthChecksUIServices(apiUrl: string) {
         loadData();
     }, []);
 
-    return [data, isLoading, error];
+    return { services, isLoading, error };
 }
 
 async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {

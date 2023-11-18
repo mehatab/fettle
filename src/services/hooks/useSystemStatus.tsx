@@ -1,89 +1,66 @@
 import { useState, useEffect } from "react";
-import { GITHUB_ORG_REPO, Status } from "../../utils/constants";
+import { Status } from "../../utils/constants";
+import Service from "../types/Service";
 import ServiceStatus from "../types/ServiceStatus";
 import SystemStatus from "../types/SystemStatus";
 
-// TODO: Couple with the other hook using Service[] input?
-function useSystemStatus() {
+function useSystemStatus(services: Service[] | null) {
     const [systemStatus, setSystemStatus] = useState<SystemStatus>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
     useEffect(() => {
-        const loadData = async () => {
+        if (services === null) {
             setIsLoading(true);
-            try {
-                const response = await fetch("./urls.cfg");
-                const configText = await response.text();
-                const configLines = configText.split("\n");
-                const services: ServiceStatus[] = [];
-                for (let ii = 0; ii < configLines.length; ii++) {
-                    const configLine = configLines[ii];
-                    const [key, url] = configLine.split("=");
-                    if (!key || !url) {
-                        continue;
-                    }
-                    const status = await logs(key);
+            return;
+        }
 
-                    services.push(status);
-                }
-                
-                if (services.every((item) => item.status === "success")) {
-                    setSystemStatus({
-                        title: "All Operational",
-                        status: Status.OPERATIONAL,
-                        datetime: services[0].date
+        try {
+            const statuses: ServiceStatus[] = services.map((service) => {
+                const { name, status, logs } = service;
+
+                const lastLog = logs.length > 0
+                    ? logs[logs.length - 1]
+                    : null;
+
+                const date = lastLog?.date;
+
+                return { name, status, date };
+            });
+
+            if (statuses.every((item) => item.status === "success")) {
+                setSystemStatus({
+                    title: "All Operational",
+                    status: Status.OPERATIONAL,
+                    datetime: statuses[0].date
+                });
+            } else if (statuses.every((item) => item.status === "failed")) {
+                setSystemStatus({
+                    title: "Outage",
+                    status: Status.OUTAGE,
+                    datetime: statuses[0].date
                     });
-                } else if (services.every((item) => item.status === "failed")) {
-                    setSystemStatus({
-                        title: "Outage",
-                        status: Status.OUTAGE,
-                        datetime: services[0].date
-                     });
-                } else if (services.every((item) => item.status === "")) {
-                    setSystemStatus({
-                        title: "Unknown",
-                        status: Status.UNKNOWN,
-                        datetime: services[0].date
-                    });
-                } else {
-                    setSystemStatus({
-                        title: "Partial Outage",
-                        status: Status.PARTIAL_OUTAGE,
-                        datetime: services[0].date
-                    });
-                }
-            } catch (e: any) {
-                setError(e);
-            } finally {
-                setIsLoading(false);
+            } else if (statuses.every((item) => item.status === "")) {
+                setSystemStatus({
+                    title: "Unknown",
+                    status: Status.UNKNOWN,
+                    datetime: statuses[0].date
+                });
+            } else {
+                setSystemStatus({
+                    title: "Partial Outage",
+                    status: Status.PARTIAL_OUTAGE,
+                    datetime: statuses[0].date
+                });
             }
-        };
-        loadData();
-    }, []);
+        } catch (e: any) {
+            setError(e);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [services]);
 
     return {systemStatus, isLoading, error};
-}
-
-async function logs(key: string): Promise<ServiceStatus> {
-    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
-    const text = await response.text();
-    const lines = text.split("\n");
-    try {
-        const line = lines[lines.length - 2];
-        const [created_at, status, _] = line.split(", ");
-        return {
-            name: key,
-            status: status,
-            date: created_at,
-        };
-    } catch (e) {
-        return {
-            name: key,
-            status: Status.UNKNOWN,
-            date: undefined,
-        };
-    }
 }
 
 export default useSystemStatus;

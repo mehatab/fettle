@@ -1,7 +1,6 @@
 // import useServices from './hooks/useServices';
 import useHealthChecksUIServices from './hooks/useHealthChecksUIServices';
 import type { NextPage } from 'next'
-import Service from './types/Service';
 import ServiceItem from './components/service';
 // import IncidentsSection from '../incidents';
 import useSystemStatus from './hooks/useSystemStatus';
@@ -12,9 +11,9 @@ const Nbsp = () => {
 }
 
 const ServicesSection: NextPage = () => {
-    const [data, isServicesLoading] = useHealthChecksUIServices(URL_HEALTHCHECKS_UI_API);
+    const { services, isLoading: isServicesLoading, error } = useHealthChecksUIServices(URL_HEALTHCHECKS_UI_API);
     // const [data, isServicesLoading] = useServices();
-    const {systemStatus, isLoading} = useSystemStatus();
+    const {systemStatus, isLoading} = useSystemStatus(services);
 
     const Icon = () => {
         if (systemStatus?.status === Status.OPERATIONAL) {
@@ -54,13 +53,13 @@ const ServicesSection: NextPage = () => {
             <div className="mx-px mt-10 lg:ml-40 lg:mr-40 ml-10 mr-10 mb-10">
                 <div className="card-body">
                     {
-                        isServicesLoading ? (
+                        isServicesLoading || !services ? (
                             // <p>Loading...</p>
                             <></>
                         ) : (
                             <ul>
                                 {
-                                    (data as Service[]).map(service => (
+                                    services.map(service => (
                                         <ServiceItem key={service.id} item={service} />
                                     ))
                                 }
