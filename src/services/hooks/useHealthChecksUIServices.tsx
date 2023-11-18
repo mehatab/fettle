@@ -4,7 +4,14 @@ import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
 import { DAYS_BACK, Status } from "../../utils/constants";
 import { sortByProp } from "../../utils/sortByProp";
-import { Check, ExecutionHistory, HealthChecksUILiveness, HealthChecksUIStatus } from "../types/HealthChecksUI";
+import { ExecutionHistory, HealthChecksUILiveness, HealthChecksUIStatus } from "../types/HealthChecksUI";
+
+type LogSummary = {
+    date: string, 
+    logs: Log[],
+};
+
+type LogsPerDay = { [key: string]: LogSummary };
 
 function useHealthChecksUIServices(apiUrl: string) {
     const [data, setData] = useState<Service[]>([]);
@@ -19,7 +26,7 @@ function useHealthChecksUIServices(apiUrl: string) {
                 const raw = await response.json() as HealthChecksUILiveness[];
 
                 const sorted = sortByProp(raw, "name");
-                const sections = sorted;
+                const sections = [sorted[0], sorted[1]];
 
                 const services: Service[] = []
                 for (let ii = 0; ii < sections.length; ii++) {
@@ -40,7 +47,7 @@ function useHealthChecksUIServices(apiUrl: string) {
                     if (!id || !name) {
                         continue;
                     }
-                    const log = await logs(entries, history);
+                    const log = await logs(section);
 
                     if (log.length > 0) {
                         services.push({ id: ii, name: name, status: log[log.length - 1].status, logs: log })
@@ -61,7 +68,9 @@ function useHealthChecksUIServices(apiUrl: string) {
     return [data, isLoading, error];
 }
 
-async function logs(entries: Check[], history: ExecutionHistory[]): Promise<LogDaySummary[]> {
+async function logs(section: HealthChecksUILiveness): Promise<LogDaySummary[]> {
+    const { name, history } = section;
+
     const logs: Log[] = [];
     const logDaySummary: LogDaySummary[] = [];
 
@@ -77,19 +86,20 @@ async function logs(entries: Check[], history: ExecutionHistory[]): Promise<LogD
         logs.push({ id: `${id}`, response_time, status: statusMap[status], created_at: on })
     })
 
-    const prepareSummary = Object.values(logs.reduce((r: any, date) => {
+    const logsPerDay = logs.reduce((r: LogsPerDay, date) => {
         const [year, month, day] = date.created_at.substr(0, 10).split('-');
-        const key = `${day}_${month}_${year}`;
+        const key = `${year}_${month}_${day}`;
         r[key] = r[key] || { date: date.created_at, logs: [] };
         r[key].logs.push(date);
         return r;
-    }, {}));
+    }, {} as LogsPerDay);
 
+    const prepareSummary = Object.values(logsPerDay);
 
-    prepareSummary.forEach((logSummary: any) => {
+    prepareSummary.forEach((logSummary) => {
         var avg_response_time = 0
 
-        logSummary.logs.forEach((log: Log) => {
+        logSummary.logs.forEach((log) => {
             if (log.response_time) {
                 avg_response_time += Number(log.response_time.replaceAll('s', ''));
             }
