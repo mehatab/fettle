@@ -6,6 +6,9 @@ import IncidentsSection from '../incidents';
 import useSystemStatus from './hooks/useSystemStatus';
 import { Status } from '../utils/constants';
 
+const Nbsp = () => {
+    return <>&nbsp;</>
+}
 
 const ServicesSection: NextPage = () => {
     const [data, isServicesLoading] = useServices();
@@ -26,28 +29,27 @@ const ServicesSection: NextPage = () => {
                         <path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm0 319.91a20 20 0 1 1 20-20 20 20 0 0 1-20 20zm21.72-201.15-5.74 122a16 16 0 0 1-32 0l-5.74-121.94v-.05a21.74 21.74 0 1 1 43.44 0z"></path>
                     </svg>
         } else {
-            return <svg className="h-6 w-6 flex-none fill-sky-100 stroke-green-500 stroke-2">
+            return <svg className="h-6 w-6 flex-none fill-gray-100 stroke-gray-200 stroke-2">
                             <circle cx="12" cy="12" r="11" />
-                            <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
                         </svg>
         }
     }
 
     return (
         <div className='mt-10'>
-            <div className="mx-px md:ml-80 md:mr-80 bg-white dark:bg-slate-800 rounded-xl card">
+            <div className="mx-px max-w-lg bg-white dark:bg-slate-800 rounded-xl card">
                 <div className="w-full flex justify-between pt-2 pl-6 pr-6 pb-2">
-                    <div className='flex items-center sm:text-xl text-xs font-semibold leading-7'>
+                    <div className='flex items-center text-xl font-semibold leading-7'>
                         <Icon />
-                        <p className="ml-3 text-gray-900">{systemStatus?.title}</p>                        
+                        <p className={["ml-3", systemStatus ? "text-gray-900" : "text-gray-400"].join(" ")}>{systemStatus?.title ?? "Loading..."}</p>                        
                     </div>
                     <div>
-                        <p className="text-xs text-gray-400">Last updated</p>
-                        <p className="text-xs text-gray-400 text-end ">{systemStatus?.datetime}</p>
+                        <p className="text-xs text-gray-400">{systemStatus ? "Last updated" : <Nbsp />}</p>
+                        <p className="text-xs text-gray-400 text-end ">{systemStatus?.datetime ?? <Nbsp />}</p>
                     </div>
                 </div>
             </div>
-            <div className="mx-px mt-10 md:ml-60 md:mr-60">
+            <div className="mx-px mt-10 lg:ml-40 lg:mr-40 sm:ml-20 sm:mr-20 ml-10 mr-10 mb-10">
                 <div className="card-body">
                     {
                         isServicesLoading ? (
