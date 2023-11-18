@@ -53,7 +53,8 @@ const ServicesSection: NextPage = () => {
                 <div className="card-body">
                     {
                         isServicesLoading ? (
-                            <p>Loading...</p>
+                            // <p>Loading...</p>
+                            <></>
                         ) : (
                             <ul>
                                 {

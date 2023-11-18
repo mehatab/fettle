@@ -18,7 +18,8 @@ const IncidentsSection: NextPage = () => {
 	return (
 		<div className="mt-5">
 			{isIncidentsLoading ? (
-				<p>Loading...</p>
+				// <p>Loading...</p>
+				<></>
 			) : (
 				<div>
 					{(monthlyIncidents as MonthlyIncident[]).map((incidents) => (
