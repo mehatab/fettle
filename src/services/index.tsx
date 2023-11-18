@@ -5,14 +5,14 @@ import Service from './types/Service';
 import ServiceItem from './components/service';
 // import IncidentsSection from '../incidents';
 import useSystemStatus from './hooks/useSystemStatus';
-import { Status } from '../utils/constants';
+import { Status, URL_HEALTHCHECKS_UI_API } from '../utils/constants';
 
 const Nbsp = () => {
     return <>&nbsp;</>
 }
 
 const ServicesSection: NextPage = () => {
-    const [data, isServicesLoading] = useHealthChecksUIServices();
+    const [data, isServicesLoading] = useHealthChecksUIServices(URL_HEALTHCHECKS_UI_API);
     // const [data, isServicesLoading] = useServices();
     const {systemStatus, isLoading} = useSystemStatus();
 

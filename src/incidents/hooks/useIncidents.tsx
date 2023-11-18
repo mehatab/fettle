@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Incident from "../types/Incident";
 import MonthlyIncident from "../types/MonthlyIncident";
+import { GITHUB_ORG_REPO } from "../../utils/constants";
 
 function useIncidents() {
     const [data, setData] = useState<MonthlyIncident[]>([]);
@@ -11,7 +12,7 @@ function useIncidents() {
         const loadData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch("https://api.github.com/repos/SellerCloudTeam/fettle/issues?per_page=20&state=all&labels=incident");
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_ORG_REPO}/issues?per_page=20&state=all&labels=incident`);
                 const issues = await response.json();
                 console.log('issues', issues)
                 const monthlyIncident = devideMonthly(issues.map((issue: any) => ({

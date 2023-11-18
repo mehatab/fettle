@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
-import { DAYS_BACK, Status } from "../../utils/constants";
+import { DAYS_BACK, GITHUB_ORG_REPO, Status } from "../../utils/constants";
 
 function useServices() {
     const [data, setData] = useState<Service[]>([]);
@@ -46,7 +46,7 @@ function useServices() {
 }
 
 async function logs(key: string): Promise<LogDaySummary[]> {
-    const response = await fetch(`https://raw.githubusercontent.com/SellerCloudTeam/fettle/main/public/status/${key}_report.log`);
+    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
 
     const text = await response.text();
     const lines = text.split("\n");

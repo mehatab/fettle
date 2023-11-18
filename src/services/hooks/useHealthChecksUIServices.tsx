@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Service from '../types/Service';
 import Log from "../types/Log";
 import LogDaySummary from "../types/LogDaySummary";
-import { DAYS_BACK, URL_HEALTHCHECKS_UI_API, Status } from "../../utils/constants";
+import { DAYS_BACK, GITHUB_ORG_REPO, Status } from "../../utils/constants";
 import { sortByProp } from "../../utils/sortByProp";
 import { HealthChecksUILiveness } from "../types/HealthChecksUI";
 
-function useHealthChecksUIServices() {
+function useHealthChecksUIServices(apiUrl: string) {
     const [data, setData] = useState<Service[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -15,7 +15,7 @@ function useHealthChecksUIServices() {
         const loadData = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(URL_HEALTHCHECKS_UI_API);
+                const response = await fetch(apiUrl);
                 const raw = await response.json() as HealthChecksUILiveness[];
 
                 const sorted = sortByProp(raw, "name");
@@ -62,7 +62,7 @@ function useHealthChecksUIServices() {
 
 async function logs(entries: unknown[]): Promise<LogDaySummary[]> {
     return []; // TODO
-    const response = await fetch(`https://raw.githubusercontent.com/SellerCloudTeam/fettle/main/public/status/${key}_report.log`);
+    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
 
     const text = await response.text();
     const lines = text.split("\n");

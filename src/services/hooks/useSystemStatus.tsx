@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Status } from "../../utils/constants";
+import { GITHUB_ORG_REPO, Status } from "../../utils/constants";
 import ServiceStatus from "../types/ServiceStatus";
 import SystemStatus from "../types/SystemStatus";
 
+// TODO: Couple with the other hook using Service[] input?
 function useSystemStatus() {
     const [systemStatus, setSystemStatus] = useState<SystemStatus>();
     const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +66,7 @@ function useSystemStatus() {
 }
 
 async function logs(key: string): Promise<ServiceStatus> {
-    const response = await fetch(`https://raw.githubusercontent.com/SellerCloudTeam/fettle/main/public/status/${key}_report.log`);
+    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_ORG_REPO}/main/public/status/${key}_report.log`);
     const text = await response.text();
     const lines = text.split("\n");
     try {
