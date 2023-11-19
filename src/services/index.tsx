@@ -48,7 +48,7 @@ const ServicesSection: NextPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="mx-px mt-10 lg:ml-40 lg:mr-40 ml-10 mr-10 mb-10">
+            <div className="mx-px mx-10 my-10 lg:mx-40 xl:mx-96">
                 <div className="card-body">
                     {
                         isServicesLoading || !services ? (
