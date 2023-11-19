@@ -35,7 +35,7 @@ const ServicesSection: NextPage = () => {
     }
 
     return (
-        <div className='mt-2'>
+        <div className='mt-2 px-2'>
             <div className="mx-auto max-w-lg bg-white dark:bg-slate-800 rounded-xl card">
                 <div className="w-full flex justify-between pt-2 pl-6 pr-6 pb-2">
                     <div className='flex items-center text-xl font-semibold leading-7'>
@@ -48,7 +48,7 @@ const ServicesSection: NextPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="mx-px mx-10 my-10 lg:mx-40 xl:mx-96">
+            <div className="mx-px my-10 md:mx-10 lg:mx-40 xl:mx-96">
                 <div className="card-body">
                     {
                         isServicesLoading || !services ? (
