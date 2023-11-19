@@ -30,7 +30,7 @@ function useSystemStatus(services: Service[] | null) {
 
             if (statuses.every((item) => item.status === Status.OPERATIONAL)) {
                 setSystemStatus({
-                    title: "All Operational",
+                    title: "All Systems Operational",
                     status: Status.OPERATIONAL,
                     datetime: statuses[0].date
                 });
