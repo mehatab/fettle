@@ -43,8 +43,8 @@ const ServicesSection: NextPage = () => {
                         <p className={["ml-3", systemStatus ? "text-gray-900" : "text-gray-400"].join(" ")}>{systemStatus?.title ?? "Loading..."}</p>                        
                     </div>
                     <div>
-                        <p className="text-xs text-gray-400">{systemStatus ? "Last updated" : <Nbsp />}</p>
-                        <p className="text-xs text-gray-400 text-end ">{systemStatus?.datetime ?? <Nbsp />}</p>
+                        <p className="text-right text-xs text-gray-400">{systemStatus ? "Last updated" : <Nbsp />}</p>
+                        <p className="text-right text-xs text-gray-400 text-end ">{systemStatus?.datetime ?? <Nbsp />}</p>
                     </div>
                 </div>
             </div>
