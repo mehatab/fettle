@@ -37,14 +37,14 @@ const ServicesSection: NextPage = () => {
     return (
         <div className='mt-2 px-2'>
             <div className="mx-auto max-w-lg bg-white dark:bg-slate-800 rounded-xl card">
-                <div className="w-full flex justify-between pt-2 pl-6 pr-6 pb-2">
+                <div className="w-full flex justify-between items-center pt-2 px-6 pb-2">
                     <div className='flex items-center text-xl font-semibold leading-7'>
                         <Icon />
-                        <p className={["ml-3", systemStatus ? "text-gray-900" : "text-gray-400"].join(" ")}>{systemStatus?.title ?? "Loading..."}</p>                        
+                        <p className={["ml-2", systemStatus ? "text-gray-900" : "text-gray-400"].join(" ")}>{systemStatus?.title ?? "Loading..."}</p>                        
                     </div>
                     <div>
-                        <p className="text-right text-xs text-gray-400">{systemStatus ? "Last updated" : <Nbsp />}</p>
-                        <p className="text-right text-xs text-gray-400 text-end ">{systemStatus?.datetime ?? <Nbsp />}</p>
+                        <p className="text-right text-xs text-gray-400 whitespace-nowrap">{systemStatus ? "Last updated" : <Nbsp />}</p>
+                        <p className="text-right text-xs text-gray-400 text-end whitespace-nowrap">{systemStatus?.datetime ?? <Nbsp />}</p>
                     </div>
                 </div>
             </div>
