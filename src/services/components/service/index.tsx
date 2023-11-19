@@ -39,7 +39,7 @@ const ServiceItem: FunctionComponent<ServiceItemProps> = ({ item }) => {
 
     return (
         <div className='mb-10'>
-            <div className='flex'>
+            <div className='flex items-center'>
                 <Icon />
                 <div className="w-full flex justify-between items-baseline">
                     <p className="ml-4 text-base font-semibold leading-6 text-gray-900">{item.name}</p>
