@@ -1,17 +1,28 @@
 #!/bin/bash
 set -e
 
+start=$SECONDS
+
 commit=false
 origin=$(git remote get-url origin)
 if [[ $origin == *statsig-io/statuspage* ]]; then
   commit=false
 fi
 
-wget https://manager.aaf.edu.au/status/monitored_entities.json -O entities.json
-entries=($(jq '.identity_providers[] | "\(.names[] | .value)=\(.entity_id)"' entities.json | grep "http" | sed -r 's/"|\(|\)//g' | sed -r 's/’| /_/g' | sed -r "s/'//g")) #| sed -r 's/\/idp\/shibboleth//g'))
-rm -f entities.json
+entries=()
 
-rm -f public/urls.cfg
+entity_urls=(
+  "https://manager.aaf.edu.au/status/monitored_entities.json"
+  "https://manager.test.aaf.edu.au/status/monitored_entities.json"
+  "https://manager.dev.aaf.edu.au/status/monitored_entities.json"
+)
+
+for entity_url in "${entity_urls[@]}"; do
+  wget "$entity_url" -O entities.json
+  entries+=($(jq '.identity_providers[] | "\(.names[] | .value)=\(.entity_id)"' entities.json | grep "http" | sed -r 's/"|\(|\)//g' | sed -r 's/’| /_/g' | sed -r "s/'//g")) #| sed -r 's/\/idp\/shibboleth//g'))
+  rm -f entities.json
+done
+
 directory_urls=(
   "https://aaf-development-static-assets.s3.ap-southeast-2.amazonaws.com/directory.html"
   "https://aaf-test-static-assets.s3.ap-southeast-2.amazonaws.com/directory.html"
@@ -27,9 +38,11 @@ for directory_url in "${directory_urls[@]}"; do
   rm -f directory.txt
 done
 
+sorted_unique_entries=($(echo "${entries[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+
 failures=()
 mkdir -p logs
-for entry in "${entries[@]}"; do
+for entry in "${sorted_unique_entries[@]}"; do
   key=$(echo "$entry" | cut -d'=' -f1)
   url=$(echo "$entry" | cut -d'=' -f2)
 
@@ -38,13 +51,13 @@ for entry in "${entries[@]}"; do
     url=$(echo "$entry" | cut -d'=' -f2)/health
   fi
 
-  echo "$entry" >>./public/urls.cfg
+  echo "$entry" >>./public/urls.cfg.tmp
   echo ""
   echo "$key $url"
   # for i in {1..3}; do
   # TODO: Do we really want to retry multiple times?
   set +e
-  response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
+  response=$(curl -m 3 -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
   set -e
   http_code=$(echo "$response" | cut -d ' ' -f 1)
   time_total=$(echo "$response" | cut -d ' ' -f 2)
@@ -68,6 +81,8 @@ for entry in "${entries[@]}"; do
   tail -2000 "public/status/${key}_report.log" >"public/status/${key}_report.log.tmp"
   mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
 done
+
+mv public/urls.cfg.tmp public/urls.cfg
 
 if [[ $commit == true ]]; then
   echo "committing logs"
@@ -103,3 +118,5 @@ if [ "${failures[*]}" != "" ] && [ "$SLACK_WEBHOOK_URL" != "" ]; then
   failure_string="The Following endpoints are failing: $(echo "${failures[*]}" | xargs printf -- '\n * \0%s\0' | sed -r 's/~~~~/ /g')"
   notify "$failure_string"
 fi
+
+echo "Finished in $((SECONDS - start))"
