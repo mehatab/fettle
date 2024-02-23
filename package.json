@@ -1,9 +1,10 @@
 {
-  "name": "fettle",
+  "name": "status",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run open && next dev",
+    "open": "sleep 5 && open http://localhost:3000 &",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
