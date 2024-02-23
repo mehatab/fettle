@@ -3,14 +3,14 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	return (
-		<>
-			<Head>
-				<title>System Status</title>
-			</Head>
-			<Component {...pageProps} />
-		</>
-	);
+  return (
+    <>
+      <Head>
+        <title>AAF Status Page</title>
+      </Head>
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default MyApp;
