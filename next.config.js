@@ -9,7 +9,7 @@ const nextConfig = {
   env: {
     branch: "feature/testing",
     repo: "ausaccessfed/status",
-    updateTimer: 60,
+    updateTimer: 60 * 10,
   },
 };
 
