@@ -11,6 +11,7 @@ fi
 
 entries=()
 
+#  TODO turn into envs
 entity_urls=(
   "https://manager.aaf.edu.au/status/monitored_entities.json"
   "https://manager.test.aaf.edu.au/status/monitored_entities.json"
@@ -23,6 +24,7 @@ for entity_url in "${entity_urls[@]}"; do
   rm -f entities.json
 done
 
+#  TODO turn into envs
 directory_urls=(
   "https://aaf-development-static-assets.s3.ap-southeast-2.amazonaws.com/directory.html"
   "https://aaf-test-static-assets.s3.ap-southeast-2.amazonaws.com/directory.html"
@@ -54,8 +56,6 @@ for entry in "${sorted_unique_entries[@]}"; do
   echo "$entry" >>./public/urls.cfg.tmp
   echo ""
   echo "$key $url"
-  # for i in {1..3}; do
-  # TODO: Do we really want to retry multiple times?
   set +e
   response=$(curl -m 3 -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
   set -e
@@ -69,17 +69,13 @@ for entry in "${sorted_unique_entries[@]}"; do
     result="failed"
     failures+=($(echo "$key $url ($res_string)" | sed -r 's/ /~~~~/g'))
   fi
-  # if [ "$result" = "success" ]; then
-  #   break
-  # fi
-  # sleep 5
-  # done
   dateTime=$(date +'%Y-%m-%d %H:%M')
   mkdir -p public/status
   echo "    $dateTime, $result, $time_total"
   echo "$dateTime, $result, $time_total" >>"public/status/${key}_report.log"
-  tail -2000 "public/status/${key}_report.log" >"public/status/${key}_report.log.tmp"
-  mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
+  #  TODO: Do we care about size?
+  # tail -2000 "public/status/${key}_report.log" >"public/status/${key}_report.log.tmp"
+  # mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
 done
 
 mv public/urls.cfg.tmp public/urls.cfg
@@ -120,3 +116,8 @@ if [ "${failures[*]}" != "" ] && [ "$SLACK_WEBHOOK_URL" != "" ]; then
 fi
 
 echo "Finished in $((SECONDS - start))"
+
+# TODO:
+# Can we make the non unique values uniquely named? i.e two vho's
+# make the urls above envs
+# get the page up and running on an anonnymus ur
