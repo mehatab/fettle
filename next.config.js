@@ -3,7 +3,7 @@
 const production = process.env.NODE_ENV === "production";
 
 const nextConfig = {
-  assetPrefix: production ? '/fettle' : '',
+  assetPrefix: production ? '/' : '',
   reactStrictMode: true,
   swcMinify: true,
 }
