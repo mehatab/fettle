@@ -33,3 +33,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vim tempfiles
+*.swp
+*.swo
+
+# python bytecode
+*.pyc
+
+# secrets
+.secrets/
