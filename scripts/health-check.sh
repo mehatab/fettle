@@ -30,6 +30,12 @@ do
   url="${URLSARRAY[index]}"
   echo "  $key=$url"
 
+  # ignore lines with "_" url placholder - these are non-web and/or s3df internally defined checks
+  if [[ "$url" == "_" ]]
+  then
+    break
+  fi
+
   for i in {1..3}
   do
     response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
