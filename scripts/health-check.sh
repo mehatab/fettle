@@ -1,6 +1,7 @@
 #!/bin/bash
 
 commit=true
+
 origin=$(git remote get-url origin)
 if [[ $origin == *statsig-io/statuspage* ]]
 then
@@ -33,36 +34,36 @@ do
   # ignore lines with "_" url placholder - these are non-web and/or s3df internally defined checks
   if [[ "$url" == "_" ]]
   then
-    break
-  fi
-
-  for i in {1..3}
-  do
-    response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
-    http_code=$(echo "$response" | cut -d ' ' -f 1)
-    time_total=$(echo "$response" | cut -d ' ' -f 2)
-    echo "    $http_code $time_total"
-    if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 202 ] || [ "$http_code" -eq 301 ] || [ "$http_code" -eq 302 ] || [ "$http_code" -eq 307 ]; then
-      result="success"
-    else
-      result="failed"
-    fi
-    if [ "$result" = "success" ]; then
-      break
-    fi
-    sleep 5
-  done
-  dateTime=$(date +'%Y-%m-%d %H:%M')
-  if [[ $commit == true ]]
-  then
-    mkdir -p public/status
-    echo "$dateTime, $result, $time_total" >> "public/status/${key}_report.log"
-    tail -2000 "public/status/${key}_report.log" > "public/status/${key}_report.log.tmp"
-    mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
+    echo "  (ignoring $key=$url)"
   else
-    echo "    $dateTime, $result, $time_total"
+    for i in {1..3}
+    do
+      response=$(curl -o /dev/null -s -w '%{http_code} %{time_total}' --silent --output /dev/null "$url")
+      http_code=$(echo "$response" | cut -d ' ' -f 1)
+      time_total=$(echo "$response" | cut -d ' ' -f 2)
+      echo "    $http_code $time_total"
+      if [ "$http_code" -eq 200 ] || [ "$http_code" -eq 202 ] || [ "$http_code" -eq 301 ] || [ "$http_code" -eq 302 ] || [ "$http_code" -eq 307 ]; then
+        result="success"
+      else
+        result="failed"
+      fi
+      if [ "$result" = "success" ]; then
+        break
+      fi
+      sleep 5
+    done
+    dateTime=$(date +'%Y-%m-%d %H:%M')
+    if [[ $commit == true ]]
+    then
+      mkdir -p public/status
+      echo "$dateTime, $result, $time_total" >> "public/status/${key}_report.log"
+      tail -2000 "public/status/${key}_report.log" > "public/status/${key}_report.log.tmp"
+      mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
+    else
+      echo "    $dateTime, $result, $time_total"
+    fi
   fi
-done
+  done
 
 if [[ $commit == true ]]
 then
