@@ -80,6 +80,5 @@ Feel free to submit pull requests and/or file issues for bugs and suggestions.
 
 <!-- GitAds-Verify: ELLTZF12YAL6BP8TCGDR5ONTHV6GIHR1 -->
 
-## GitAds Sponsored
 [![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=mehatab/fettle@github)](https://gitads.dev/v1/ad-track?source=mehatab/fettle@github)
 
