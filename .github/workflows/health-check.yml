@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Run Shell Script
         id: shell_script_run
         run: bash ./scripts/health-check.sh
