@@ -9,6 +9,8 @@ on:
 
 jobs:
   health_check_job:
+    permissions:
+      contents: write 
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
