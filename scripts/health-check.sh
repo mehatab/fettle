@@ -1,11 +1,7 @@
 #!/bin/bash
 
-commit=true
-origin=$(git remote get-url origin)
-if [[ $origin == *statsig-io/statuspage* ]]
-then
-  commit=false
-fi
+# El script ya no maneja commits directamente
+# El workflow de GitHub Actions se encarga de eso
 
 declare -a KEYSARRAY
 declare -a URLSARRAY
@@ -47,23 +43,12 @@ do
     sleep 5
   done
   dateTime=$(date +'%Y-%m-%d %H:%M')
-  if [[ $commit == true ]]
-  then
-    mkdir -p public/status
-    echo "$dateTime, $result, $time_total" >> "public/status/${key}_report.log"
-    tail -2000 "public/status/${key}_report.log" > "public/status/${key}_report.log.tmp"
-    mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
-  else
-    echo "    $dateTime, $result, $time_total"
-  fi
+  mkdir -p public/status
+  echo "$dateTime, $result, $time_total" >> "public/status/${key}_report.log"
+  tail -2000 "public/status/${key}_report.log" > "public/status/${key}_report.log.tmp"
+  mv "public/status/${key}_report.log.tmp" "public/status/${key}_report.log"
+  echo "    $dateTime, $result, $time_total"
 done
 
-if [[ $commit == true ]]
-then
-  echo "committing logs"
-  git config --global user.name 'github-actions[bot]'
-  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-  git add -A --force public/status/
-  git commit -am '[Automated] Update Health Check Logs'
-  git push
-fi
+echo "Health check completed. Logs saved to public/status/"
+echo "The GitHub Actions workflow will handle committing and creating a pull request."
