@@ -50,7 +50,12 @@ jobs:
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         run: |
+          # Ensure we're working with the main repository (not a fork)
+          REPO_FULL_NAME="${{ github.repository }}"
+          echo "Creating PR in repository: $REPO_FULL_NAME"
+          
           PR_NUMBER=$(gh pr create \
+            --repo $REPO_FULL_NAME \
             --title "[Automated] Health Check Logs Update - $(date +%Y-%m-%d\ %H:%M)" \
             --body "## Health Check Logs Update
           
@@ -65,9 +70,9 @@ jobs:
             --head $BRANCH_NAME \
             --output json | jq -r '.number')
           
-          echo "Created PR #$PR_NUMBER"
+          echo "Created PR #$PR_NUMBER in $REPO_FULL_NAME"
           
           # Auto-merge the PR
-          gh pr merge $PR_NUMBER --auto --merge --delete-branch
+          gh pr merge $PR_NUMBER --repo $REPO_FULL_NAME --auto --merge --delete-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
