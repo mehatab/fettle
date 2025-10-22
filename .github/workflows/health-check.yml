@@ -50,7 +50,7 @@ jobs:
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          gh pr create \
+          PR_NUMBER=$(gh pr create \
             --title "[Automated] Health Check Logs Update - $(date +%Y-%m-%d\ %H:%M)" \
             --body "## Health Check Logs Update
           
@@ -62,6 +62,12 @@ jobs:
           
           This is an automated update from the health check workflow." \
             --base main \
-            --head $BRANCH_NAME
+            --head $BRANCH_NAME \
+            --output json | jq -r '.number')
+          
+          echo "Created PR #$PR_NUMBER"
+          
+          # Auto-merge the PR
+          gh pr merge $PR_NUMBER --auto --merge --delete-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
