@@ -11,10 +11,57 @@ jobs:
   health_check_job:
     permissions:
       contents: write 
+      pull-requests: write
     runs-on: ubuntu-latest
     name: Check all sites
     steps:
       - uses: actions/checkout@v4
-      - name: Run Shell Script
-        id: shell_script_run
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+      - name: Run Health Check Script
         run: bash ./scripts/health-check.sh
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create branch and commit
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          BRANCH_NAME="health-check-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b $BRANCH_NAME
+          git add public/status/
+          git commit -m "[Automated] Update Health Check Logs - $(date)"
+          git push origin $BRANCH_NAME
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+      
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          gh pr create \
+            --title "[Automated] Health Check Logs Update - $(date +%Y-%m-%d\ %H:%M)" \
+            --body "## Health Check Logs Update
+          
+          This PR contains automated health check logs generated at $(date).
+          
+          ### Changes:
+          - Updated health check logs for all monitored services
+          - Generated at: $(date)
+          
+          This is an automated update from the health check workflow." \
+            --base main \
+            --head $BRANCH_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
